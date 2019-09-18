@@ -2,18 +2,25 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const Login = (props) => {
+	console.log(props);
 	//Login will take in props and creds initial value will be a blank string and password setCreds will be utilized with a handleChange
 	const [creds, setCreds] = useState({ username: "", password: "" });
 
-	const handleChange = event => {
-		setCreds({ ...creds, [event.target.name]: event.target.value })
+	const handleChange = e => {
+		// [] allows us to access event.target.name expression to access name
+		setCreds({ ...creds, [e.target.name]: e.target.value })
 	}
-	//preventDefault will keep page from reloading upon submittal will send credentials object from forms which holds that value from user input, will be with fake and fake login and password
+	//preventDefault will keep page from reloading upon submittal will send credentials object from forms which holds that value from user input
 	const handleSubmit = event => {
 		event.preventDefault();
 		axios.post('http://localhost:5000/api/login', creds)
+			//Code 200 Success
 			.then(response => {
 				console.log(response);
+				//place token defined here in server.js into local storage from response this will allow us to access the value of the token in other components from localStorage
+				localStorage.setItem('token', response.data.payload);
+				//upon success we want to send user to another page that they were trying to access in this case /friends
+				props.history.push("/friends");
 
 			})
 			.catch(error => console.log(error.response));

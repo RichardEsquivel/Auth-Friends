@@ -20,7 +20,7 @@ function App() {
 		//at /login we will display the login component using Route
 		<div className="App">
 			<Route path="/login" component={Login} />
-			<Route path="/friends" component={Friends} />
+			<ProtectedRoute path="/friends" component={Friends} />
 		</div>
 	);
 }
